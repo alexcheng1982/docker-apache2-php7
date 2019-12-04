@@ -146,7 +146,13 @@ RUN set -eux; \
 		curl -fsSL -o php.tar.xz.asc "$PHP_ASC_URL"; \
 		export GNUPGHOME="$(mktemp -d)"; \
 		for key in $GPG_KEYS; do \
-			gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+			for server in $(shuf -e ha.pool.sks-keyservers.net \
+        hkp://p80.pool.sks-keyservers.net:80 \
+				keyserver.ubuntu.com \
+				hkp://keyserver.ubuntu.com:80 \
+				pgp.mit.edu) ; do \
+				gpg --batch --keyserver "$server" --recv-keys "$key" && break || : ; \
+      done \
 		done; \
 		gpg --batch --verify php.tar.xz.asc php.tar.xz; \
 		gpgconf --kill all; \
