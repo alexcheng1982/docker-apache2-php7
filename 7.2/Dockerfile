@@ -120,7 +120,7 @@ ENV PHP_LDFLAGS="-Wl,-O1 -Wl,--hash-style=both -pie"
 ENV GPG_KEYS 1729F83938DA44E27BA0F4D3DBDB397470D12172 B1B44D8F021E4E2D6021E995DC9FF8D3EE5AF27F
 
 ENV PHP_VERSION 7.2.25
-ENV PHP_URL="https://www.php.net/get/php-7.2.25.tar.xz/from/this/mirror"
+ENV PHP_URL="https://www.php.net/get/php-7.2.25.tar.xz/from/this/mirror" PHP_ASC_URL="https://www.php.net/get/php-7.2.25.tar.xz.asc/from/this/mirror"
 ENV PHP_SHA256="746efeedc38e6ff7b1ec1432440f5fa801537adf6cd21e4afb3f040e5b0760a9" PHP_MD5=""
 
 RUN set -eux; \
@@ -146,7 +146,13 @@ RUN set -eux; \
 		curl -fsSL -o php.tar.xz.asc "$PHP_ASC_URL"; \
 		export GNUPGHOME="$(mktemp -d)"; \
 		for key in $GPG_KEYS; do \
-			gpg --batch --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
+			for server in $(shuf -e ha.pool.sks-keyservers.net \
+        hkp://p80.pool.sks-keyservers.net:80 \
+				keyserver.ubuntu.com \
+				hkp://keyserver.ubuntu.com:80 \
+				pgp.mit.edu) ; do \
+				gpg --batch --keyserver "$server" --recv-keys "$key" && break || : ; \
+      done \
 		done; \
 		gpg --batch --verify php.tar.xz.asc php.tar.xz; \
 		gpgconf --kill all; \
