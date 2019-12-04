@@ -1,5 +1,5 @@
 {
-  "path": "c77c579341cfbfee90e669535ea3057679a1005b/7.2/stretch/apache",
+  "path": "4bac7da6e793e561b53f300021c9fa57da9fe0a8/7.2/stretch/apache",
   "files": [
     "Dockerfile",
     "apache2-foreground",
@@ -11,6 +11,6 @@
   ],
   "lines": {
     "start":  7,
-    "end": -10
+    "end": -12
   }
 }
