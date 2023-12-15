@@ -30,4 +30,8 @@ const content = lines.slice(start, end).join('\n');
 const result = template({ content });
 fs.writeFileSync(`./${version}/Dockerfile`, result);
 
-execSync(`chmod +x ${version}/docker-php-*`)
+fs.readdirSync(version).forEach(file => {
+  if (file.startsWith('docker-php-')) {
+    execSync(`git add --chmod=+x ${version}/${file}`);
+  }
+});

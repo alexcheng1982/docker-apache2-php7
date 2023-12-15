@@ -1,0 +1,16 @@
+{
+  "path": "b9f17156020c3aef71df681b27684533529347a7/7.4/bullseye/apache",
+  "files": [
+    "Dockerfile",
+    "apache2-foreground",
+    "docker-php-entrypoint",
+    "docker-php-ext-configure",
+    "docker-php-ext-enable",
+    "docker-php-ext-install",
+    "docker-php-source"
+  ],
+  "lines": {
+    "start":  7,
+    "end": -10
+  }
+}
