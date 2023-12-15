@@ -261,10 +261,14 @@ RUN set -eux; \
 	; \
 	apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \
 	rm -rf /var/lib/apt/lists/*; \
+	apt-get install -y --no-install-recommends libonig-dev libsodium-dev; \
 	\
 # update pecl channel definitions https://github.com/docker-library/php/issues/443
 	pecl update-channels; \
-	rm -rf /tmp/pear ~/.pearrc
+	rm -rf /tmp/pear ~/.pearrc; \
+	\
+# smoke test
+	php --version
 
 RUN apt-get update && apt-get install -y --no-install-recommends libonig-dev libsodium-dev
 
